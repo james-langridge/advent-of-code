@@ -8,8 +8,10 @@ const rl = readline.createInterface({
     crlfDelay: Infinity
 });
 
+rl.on('line', (line) => processLine(line));
+rl.on('close', () => sumValues());
+
 const calibrationValues: number[] = []
-const numberStrings = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 const numberMap = new Map([
     ["one", '1'],
     ["two", '2'],
@@ -26,19 +28,19 @@ export function processLine(line: string) {
     const indexMap = new Map()
     let calibrationValue = 0
 
-    numberStrings.forEach(num => {
-        if (line.includes(num)) {
-            let prevIndex = line.indexOf(num)
-            indexMap.set(prevIndex, numberMap.get(num))
+    for (const key of numberMap.keys()) {
+        if (line.includes(key)) {
+            let prevIndex = line.indexOf(key)
+            indexMap.set(prevIndex, numberMap.get(key))
 
-            while (line.indexOf(num, prevIndex + 1) !== -1) {
-                prevIndex = line.indexOf(num, prevIndex + 1)
-                indexMap.set(prevIndex, numberMap.get(num))
+            while (line.indexOf(key, prevIndex + 1) !== -1) {
+                prevIndex = line.indexOf(key, prevIndex + 1)
+                indexMap.set(prevIndex, numberMap.get(key))
             }
         }
-    })
+    }
 
-    for (let char of line) {
+    for (const char of line) {
         if (Number.isInteger(Number(char))) {
             let prevIndex = line.indexOf(char)
             indexMap.set(prevIndex, char)
@@ -50,37 +52,24 @@ export function processLine(line: string) {
         }
     }
 
-    const sortedMap = new Map([...indexMap.entries()].sort((a, b) => a[0] - b[0]));
-    const values = Array.from(sortedMap.values())
+    const sortedMap = new Map([...indexMap].sort((a, b) => a[0] - b[0]));
+    const values = [...sortedMap.values()]
 
     if (values.length === 1) {
         calibrationValue = Number(values[0] + values[0])
-        calibrationValues.push(calibrationValue)
     } else {
-        const firstNum = values.shift()
-        const lastNum = values.pop()
-
-        if (firstNum && lastNum) {
-            calibrationValue = Number(firstNum + lastNum)
-            calibrationValues.push(calibrationValue)
-        }
+        calibrationValue = Number(values[0] + values[values.length - 1])
     }
+
+    calibrationValues.push(calibrationValue)
 
     return calibrationValue
 }
 
-export function sumValues(values: number[]) {
-    const sum = values.reduce((prev, cur) => {
+export function sumValues() {
+    const sum = calibrationValues.reduce((prev, cur) => {
         return prev + cur
     }, 0)
 
     console.log('Sum of all the calibration values:', sum)
 }
-
-rl.on('line', (line) => {
-    processLine(line)
-});
-
-rl.on('close', () => {
-    sumValues(calibrationValues)
-});
