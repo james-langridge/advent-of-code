@@ -3,7 +3,10 @@ import {
     expect,
     test,
 } from "@jest/globals";
-import {processLine} from "./part-2";
+import {processLine, sumValues} from "./part-2";
+
+const expectedValues = [12, 38, 15, 77, 29, 83, 13, 24, 42, 14, 76]
+const expectedSum = 423
 
 describe("Day 1 part 2", () => {
     test("processLine() should correctly process the input", () => {
@@ -27,8 +30,12 @@ describe("Day 1 part 2", () => {
             results.push(processLine(line))
         })
 
-        const expectedResult = [12, 38, 15, 77, 29, 83, 13, 24, 42, 14, 76]
+        expect(results).toEqual(expectedValues);
+    })
 
-        expect(results).toEqual(expectedResult);
+    test("sumValues() should correctly sum the values", () => {
+        const sum = sumValues(expectedValues)
+
+        expect(sum).toEqual(expectedSum);
     })
 });

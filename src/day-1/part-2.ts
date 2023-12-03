@@ -9,7 +9,7 @@ const rl = readline.createInterface({
 });
 
 rl.on('line', (line) => processLine(line));
-rl.on('close', () => sumValues());
+rl.on('close', () => sumValues(calibrationValues));
 
 const calibrationValues: number[] = []
 const numberMap = new Map([
@@ -66,10 +66,12 @@ export function processLine(line: string) {
     return calibrationValue
 }
 
-export function sumValues() {
-    const sum = calibrationValues.reduce((prev, cur) => {
+export function sumValues(values: number[]) {
+    const sum = values.reduce((prev, cur) => {
         return prev + cur
     }, 0)
 
     console.log('Sum of all the calibration values:', sum)
+
+    return sum
 }
