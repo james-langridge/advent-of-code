@@ -1,6 +1,7 @@
 import path from "path";
 import fs from 'fs';
 import readline from 'readline';
+import {sumValues} from "../utils";
 
 const fileStream = fs.createReadStream(path.join(__dirname, '../../src/day-1/input.txt'));
 const rl = readline.createInterface({
@@ -64,14 +65,4 @@ export function processLine(line: string) {
     calibrationValues.push(calibrationValue)
 
     return calibrationValue
-}
-
-export function sumValues(values: number[]) {
-    const sum = values.reduce((prev, cur) => {
-        return prev + cur
-    }, 0)
-
-    console.log('Sum of all the calibration values:', sum)
-
-    return sum
 }

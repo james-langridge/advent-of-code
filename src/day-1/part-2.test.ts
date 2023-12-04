@@ -3,7 +3,8 @@ import {
     expect,
     test,
 } from "@jest/globals";
-import {processLine, sumValues} from "./part-2";
+import {processLine} from "./part-2";
+import {sumValues} from "../utils";
 
 const expectedValues = [12, 38, 15, 77, 29, 83, 13, 24, 42, 14, 76]
 const expectedSum = 423
